@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
 
 
-    public float moveSpeed; 
+    public float moveSpeed, gravityChanger, jump, runSpeed = 15f; 
     public CharacterController CharController;
 
     private Vector3 moveInput;
@@ -16,6 +16,12 @@ public class PlayerController : MonoBehaviour
     public Transform camPlayer;
 
     public float sensitivity;
+
+    private bool canJump;
+    public Transform groundCheck;
+    public LayerMask whatIsGround;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,12 +35,41 @@ public class PlayerController : MonoBehaviour
 
         //moveInput.x = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
         //moveInput.z = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+
+        //adding gravity force
+        float gravForce = moveInput.y;
+
         Vector3 verticalMove = transform.forward * Input.GetAxis("Vertical");
         Vector3 horizontalMove = transform.right * Input.GetAxis("Horizontal");
 
         moveInput = verticalMove + horizontalMove;
         moveInput.Normalize();
-        moveInput = moveInput * moveSpeed ;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveInput = moveInput * runSpeed;
+        }else
+        {
+            moveInput = moveInput * moveSpeed;
+        }
+        
+
+        moveInput.y = gravForce;
+        moveInput.y += Physics.gravity.y * gravityChanger * Time.deltaTime;
+
+        if(CharController.isGrounded)
+        {
+            moveInput.y = Physics.gravity.y * gravityChanger * Time.deltaTime;
+        }
+
+
+        canJump = Physics.OverlapSphere(groundCheck.position, .25f, whatIsGround).Length > 0;
+
+        //jumping
+        if(Input.GetKeyDown(KeyCode.Space) && canJump)
+        {
+            moveInput.y = jump;
+        }
 
         CharController.Move(moveInput * Time.deltaTime);
 
