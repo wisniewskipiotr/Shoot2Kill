@@ -74,7 +74,6 @@
     <Compile Include="Assets\Scripts\Teleport.cs" />
     <Compile Include="Assets\Scripts\Teleporter.cs" />
     <Compile Include="Assets\Scripts\UIController.cs" />
-    <Compile Include="Assets\Udemy FPS Assets\Starfield Skybox\Demo\Script\LookCamera.cs" />
     <None Include="Assets\Udemy FPS Assets\model credits.txt" />
     <None Include="Assets\Udemy FPS Assets\Audio\Music\INFO.txt" />
     <None Include="Assets\Udemy FPS Assets\Starfield Skybox\source.txt" />
